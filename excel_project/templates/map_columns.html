@@ -1,0 +1,15 @@
+<form method="post" action="{% url 'process_mapping' %}">
+    {%csrf_token%}
+    {% for field in db_fields%}
+    <label>{{field}}</label>
+    <select name="map_{{field}}">
+        <option value="">select</option>
+        {% for col in column%}
+            <option value="{{col}}">{{col}}</option>
+        {%endfor%}
+    </select><br><br>
+    {%endfor%}
+    <button type="submit">Submit</button>
+
+
+</form>
