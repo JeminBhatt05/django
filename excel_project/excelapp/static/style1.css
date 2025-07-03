@@ -1,0 +1,88 @@
+/* Reset default spacing and box sizing */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #eef1f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+form {
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+}
+
+form p {
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+form p[style*="color:red"] {
+    color: #e74c3c;
+}
+
+form p[style*="color:green"] {
+    color: #27ae60;
+}
+
+form label {
+    display: block;
+    margin-top: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.select-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.select-row label {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.select-row select {
+    flex: 2;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    margin-right: 10px;
+}
+
+.select-row input[type="checkbox"] {
+    transform: scale(1.2);
+}
+
+button {
+    width: 100%;
+    margin-top: 25px;
+    padding: 12px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
