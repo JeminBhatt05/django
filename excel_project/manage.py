@@ -20,3 +20,17 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+
+models.py
+from phonenumber_field.modelfields import PhoneNumberField
+
+class User(models.Model):
+    name = models.CharField(max_length=100)
+    mobile = PhoneNumberField(unique=True, region='IN')  # India region
+    email = models.EmailField(unique=True)
+    password = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
