@@ -84,3 +84,31 @@ def login_view(request):
     else:
         form = CustomLoginForm()
     return render(request, 'accounts/login.html', {'form': form})
+
+login.html
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <style>
+        body { font-family: Arial; background: #f0f0f0; }
+        .login-container { max-width: 400px; margin: 50px auto; padding: 40px; background: #fff; border-radius: 8px; }
+        input { width: 100%; padding: 10px; margin: 10px 0; }
+        button { width: 100%; padding: 10px; background: #1976d2; color: #fff; border: none; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
+    </div>
+</body>
+</html>
+
