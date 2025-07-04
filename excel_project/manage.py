@@ -112,3 +112,28 @@ login.html
 </body>
 </html>
 
+
+registration.html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    <style>
+        body { font-family: Arial; background: #f0f0f0; }
+        .register-container { max-width: 400px; margin: 50px auto; padding: 40px; background: #fff; border-radius: 8px; }
+        input { width: 100%; padding: 10px; margin: 10px 0; }
+        button { width: 100%; padding: 10px; background: #388e3c; color: #fff; border: none; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <h2>Register</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Register</button>
+        </form>
+        <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+    </div>
+</body>
+</html>
