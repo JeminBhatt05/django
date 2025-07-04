@@ -49,3 +49,38 @@ class RegistrationForm(forms.ModelForm):
 class CustomLoginForm(AuthenticationForm):
     username = forms.CharField(label="Mobile Number")
     password = forms.CharField(widget=forms.PasswordInput)
+
+views.pt
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
+from .forms import RegistrationForm, CustomLoginForm
+
+def register(request):
+    if request.method == "POST":
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            mobile = form.cleaned_data['mobile']
+            password = form.cleaned_data['password']
+            user = User.objects.create_user(username=mobile, email=email, password=password, first_name=name)
+            user.save()
+            return redirect('login')
+    else:
+        form = RegistrationForm()
+    return render(request, 'accounts/register.html', {'form': form})
+
+def login_view(request):
+    if request.method == "POST":
+        form = CustomLoginForm(request, data=request.POST)
+        if form.is_valid():
+            mobile = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(username=mobile, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')  # Change 'home' to your app's home page
+    else:
+        form = CustomLoginForm()
+    return render(request, 'accounts/login.html', {'form': form})
