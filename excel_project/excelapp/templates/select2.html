@@ -1,0 +1,223 @@
+
+<html>
+    <head>
+      <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(90deg,rgba(0, 30, 255, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(89, 89, 89, 1) 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        form {
+            background:whitesmoke;
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            margin: left -30px;
+            margin-bottom: 10%;
+            border: 2px solid black;
+        }
+        
+        .form-table {
+            margin-top: 10%;
+            width: 100%;
+            border-collapse:inherit;
+            border: 2px solid #2f80ed;
+            background: #0d0d0d;
+            height: 30%;
+            border-radius: 8px; 
+            border-color:#24292e ;
+            overflow: hidden;
+        }
+        
+        .form-table td {
+            padding: 8px 12px;
+            border: 2px solid #0b0b0b;
+            border:none;
+            
+        }
+        .form-table tr {
+            background:#8f918f;
+        }
+        .form-tabletr:hover{
+            background: #dde6ee;
+        }
+        label {
+            font-weight: 500;
+            color:black;
+            min-width: 80px;
+            display: inline-block;
+        }
+        
+        select {
+            width: 160px;
+            padding: 6px 10px;
+            border: 1px solid #bfc4ca;
+            border-radius: 4px;
+            background: #f8fafd;
+            font-size: 15px;
+            outline: none;
+            transition: border 0.2s;
+        }
+        select:focus {
+            border: 1.5px solid #007bff;
+            background: #fff;
+        }
+        
+        input[type="checkbox"] {
+            margin-left: 18px;
+            accent-color: #2f80ed;
+            transform: scale(1.1);
+        }
+        
+        button[type="submit"] {
+            background: #333;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 26px;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: background 0.2s;
+        }
+        button[type="submit"]:hover {
+            background: #45a049;
+        }
+        
+        p[style*="color:red"] {
+            background: #ffeaea;
+            border: 1px solid #ff7d7d;
+            color: #d40000 !important;
+            border-radius: 3px;
+            padding: 8px 12px;
+            text-align: center;
+            font-weight: bold;
+           
+        }
+        
+        p[style*="color:green"] {
+            background: #eaffea;
+            border: 1px solid #7dff7d;
+            color: #007d07 !important;
+            border-radius: 3px;
+            padding: 8px 12px;
+            
+            text-align: center;
+            font-weight: bold;
+           
+        } 
+        
+      </style>
+    </head>
+
+<body>
+    
+    <form method="POST" onsubmit="return validateSelection()">
+    
+    {% if success %}<p style="color:green">{{ success }}</p>{% endif %}
+        {% csrf_token %}
+        <table class="form-table">
+            <tr>
+                <td><label>Database Colmns</label></td>
+                <td><label>Excel Colmns for Fetching</label></td>
+            </tr>
+        
+            <tr>
+                <td><label for="selected_item1">name:</label></td>
+                <td>
+                    <select name="selected_item1" id="selected_item1">
+                        <option value="">--select--</option>
+                        {% for item in items %}
+                            <option value="{{ item }}">{{ item }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="checkbox" name="item2"> Set Unique
+                </td>
+            </tr>
+            <tr>
+                <td><label for="selected_item2">mn:</label></td>
+                <td>
+                    <select name="selected_item2" id="selected_item2">
+                        <option value="">--select--</option>
+                        {% for item in items %}
+                            <option value="{{ item }}">{{ item }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="checkbox" name="item3"> Set Unique
+                </td>
+            </tr>
+            <tr>
+                <td><label for="selected_item3">language:</label></td>
+                <td>
+                    <select name="selected_item3" id="selected_item3">
+                        <option value="">--select--</option>
+                        {% for item in items %}
+                            <option value="{{ item }}">{{ item }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="checkbox" name="item4"> Set Unique
+                </td>
+            </tr>
+            <tr>
+                <td><label for="selected_item4">gender:</label></td>
+                <td>
+                    <select name="selected_item4" id="selected_item4">
+                        <option value="">--select--</option>
+                        {% for item in items %}
+                            <option value="{{ item }}">{{ item }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="checkbox" name="item5" > Set Unique
+                </td>
+            </tr>
+        </table>
+        
+        <button type="submit" value="submit" >Submit</button>
+        <p>upload different file <a href="{% url 'upload' %}">Upload New file</a></p>
+    </form>
+
+    <script type="text/javascript">
+        function validateSelection() {
+            
+            const selectedValue1 = document.getElementById("selected_item1").value;
+            const selectedValue2 = document.getElementById("selected_item2").value;
+            const selectedValue3 = document.getElementById("selected_item3").value;
+            const selectedValue4 = document.getElementById("selected_item4").value;
+
+            const selectedValues = [selectedValue1, selectedValue2, selectedValue3, selectedValue4];
+            const hasDuplicates = new Set(selectedValues).size !== selectedValues.length;
+            /*const selected = [
+                
+                document.getElementById('selected_item1').value,
+                document.getElementById('selected_item2').value,
+                document.getElementById('selected_item3').value,
+                document.getElementById('selected_item4').value,
+            ];*/
+            if (hasDuplicates) {
+                alert("Please select different values for each field.");
+                return false;
+            }
+            if(selectedValue1=="" || selectedValue2==""|| selectedValue3==""|| selectedValue4=="")
+            {
+                alert("please select value for all colmns")
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>                     
