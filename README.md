@@ -156,3 +156,44 @@ login.html
 {% endfor %}
 </body>
 </html>
+
+
+
+new  
+def sync_data(df, unique_fields, s1, s2, s3, s4):
+    # ------------------------- 1.  Normalise the payload ---------------------
+    mapping   = {"name": s1, "mn": s2, "language": s3, "gender": s4}
+    reverse   = {"item2": "name", "item3": "mn", "item4": "language", "item5": "gender"}
+
+    df = df[[v for v in mapping.values()]].copy()          # keep only mapped columns
+    df.columns = list(mapping.keys())                      # rename to model-field names
+
+    if not unique_fields:
+        raise ValueError("At least one unique field is required")
+
+    mm = reverse[unique_fields[0]]                         # the column you marked UNIQUE
+    df[mm] = df[mm].astype(str).str.strip()
+    df = df.dropna(subset=[mm])
+
+    # ------------------------- 2.  Lookup existing objects -------------------
+    existing = {getattr(e, mm): e for e in Employe.objects.all()}
+
+    new_keys     = set(df[mm]) - existing.keys()
+    update_keys  = set(df[mm]) & existing.keys()
+    delete_keys  = existing.keys()  - set(df[mm])
+
+    # ------------------------- 3.  INSERT new rows ---------------------------
+    Employe.objects.bulk_create(
+        Employe(**row._asdict())
+        for row in df[df[mm].isin(new_keys)].itertuples(index=False)
+    )
+
+    # ------------------------- 4.  UPDATE existing rows ----------------------
+    for row in df[df[mm].isin(update_keys)].itertuples(index=False):
+        obj = existing[getattr(row, mm)]
+        for field in ["name", "mn", "language", "gender"]:
+            setattr(obj, field, getattr(row, field))
+        obj.save()
+
+    # ------------------------- 5.  DELETE missing rows -----------------------
+    Employe.objects.filter(**{f"{mm}__in": list(delete_keys)}).delete()
