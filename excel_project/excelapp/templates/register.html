@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    
+    <style>
+        body { font-family: Arial; 
+            justify-content:center;
+            background: linear-gradient(90deg,rgba(0, 30, 255, 1) 0%, rgba(9, 9, 121, 1) 35%, rgb(73, 49, 49) 100%); }
+        .register-container { max-width: 400px; margin: 50px auto; padding: 40px; background: #fff; border-radius: 8px; margin-top:150px; }
+        input { width: 100%; padding: 10px; margin: 10px 0; }
+        button { width: 100%; padding: 10px; background: #388e3c; color: #fff; border: none; border-radius: 4px; }
+        p[style*="color:red"] {
+            background: #ffeaea;
+            border: 1px solid #ff7d7d;
+            color: #d40000 !important;
+            border-radius: 3px;
+            /*padding: 8px 12px;*/
+            text-align: center;
+            font-weight: bold;
+            width:100%;
+            margin-left:0%;
+            margin-top:5px;
+            margin-bottom:10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="register-container">
+<form method="POST">
+    {% csrf_token %}
+    <h2>Register</h2>
+    <input type="text" name="name" placeholder="Name" ><br>
+    <input type="text" name="email" placeholder="Email" ><br>
+    <input type="text" name="mobile" placeholder="Mobile Number" ><br>
+    <input type="password" name="password" placeholder="Password" ><br>
+    <input type="password" name="confirm_password" placeholder="Confirm Password" ><br>
+    <button type="submit">Register</button>
+    <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+</form>
+{% for error in errors %}
+    <p style="color:red">{{ error }}</p>
+{% endfor %}
+
+{% for msg in messages %}
+    <p style="color:red">{{ msg }}</p>
+{% endfor %}
+</div>
+
+</body>
+</html>
+
+</html>
+
